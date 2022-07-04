@@ -1,7 +1,6 @@
 import netCDF4 as nc
 from datetime import date, datetime
 from calendar import monthrange
-import matplotlib.pyplot as plt
 
 DATASETS_DIR = "/home/paunstefan/Downloads/weather-data/"
 MAX_TEMPERATURE_DATASET = DATASETS_DIR + "tx_ens_mean_0.25deg_reg_v25.0e.nc"
@@ -14,8 +13,6 @@ RESOLUTION = 0.25
 OFFSET = 0.125
 
 DAYS_START = (1950, 1, 1)
-
-BUCHAREST_COORDS = (44.5, 26.034)  # lat, lon
 
 # Variables parameters: (time, latitude, longitude)
 
@@ -63,26 +60,3 @@ class WeatherDataset():
 max_ds = WeatherDataset(nc.Dataset(MAX_TEMPERATURE_DATASET), "tx")
 min_ds = WeatherDataset(nc.Dataset(MIN_TEMPERATURE_DATASET), "tn")
 pp_ds = WeatherDataset(nc.Dataset(PRECIPITATION_DATASET), "rr")
-
-
-def plot_month(year, month, lat, lon):
-    days = range(1, monthrange(year, month)[1] + 1)
-    y1 = max_ds.monthly_data(year, month, lat, lon)
-    y2 = min_ds.monthly_data(year, month, lat, lon)
-
-    fig, ax = plt.subplots(figsize=(14, 7))
-
-    ax.bar(days, y1, tick_label=days, width=1,
-           edgecolor="white", color="red", linewidth=0.7)
-    ax.bar(days, y2, tick_label=days, width=1,
-           edgecolor="white", color="lightblue", linewidth=0.7)
-
-    plt.show()
-
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()
