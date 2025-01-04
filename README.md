@@ -19,7 +19,7 @@ to work on.
 
 The `notebook.ipynb` file contains the data processing an visualization.
 
-The database file for Bucharest is included in the repo.
+The database file for Bucharest is included in the repo. The dataset includes data until 2024-06-30.
 
 ## References
 

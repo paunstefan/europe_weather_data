@@ -10,9 +10,9 @@ MIN_TEMPERATURE_DATASET = pathlib.Path("tn_ens_mean_0.25deg_reg_v30.0e.nc")
 MEAN_TEMPERATURE_DATASET = pathlib.Path("tg_ens_mean_0.25deg_reg_v30.0e.nc")
 PRECIPITATION_DATASET = pathlib.Path("rr_ens_mean_0.25deg_reg_v30.0e.nc")
 
-BUCHAREST_COORDS = (44.5, 26.0)
+COORDS = (44.5, 26.0)
 
-BUC_INDEXES = coords_pair_indexes(BUCHAREST_COORDS)
+INDEXES = coords_pair_indexes(COORDS)
 
 max_ds = WeatherDataset(nc.Dataset(DATASETS_DIR / MAX_TEMPERATURE_DATASET), "tx")
 min_ds = WeatherDataset(nc.Dataset(DATASETS_DIR / MIN_TEMPERATURE_DATASET), "tn")
@@ -21,7 +21,7 @@ pp_ds = WeatherDataset(nc.Dataset(DATASETS_DIR / PRECIPITATION_DATASET), "rr")
 
 size = len(mean_ds.dataset["time"])
 
-get_ds = lambda i, ds: ds.datapoint(i, BUC_INDEXES[0],BUC_INDEXES[1])
+get_ds = lambda i, ds: ds.datapoint(i, INDEXES[0],INDEXES[1])
 
 weather_data = []
 
