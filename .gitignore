@@ -1,2 +1,5 @@
 __pypackages__
 __pycache__
+
+datasets
+.venv

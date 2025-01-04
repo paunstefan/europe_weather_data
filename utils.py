@@ -1,16 +1,12 @@
 import netCDF4 as nc
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from calendar import monthrange
-
-DATASETS_DIR = "/home/paunstefan/Downloads/weather-data/"
-MAX_TEMPERATURE_DATASET = DATASETS_DIR + "tx_ens_mean_0.25deg_reg_v25.0e.nc"
-MIN_TEMPERATURE_DATASET = DATASETS_DIR + "tn_ens_mean_0.25deg_reg_v25.0e.nc"
-PRECIPITATION_DATASET = DATASETS_DIR + "rr_ens_mean_0.25deg_reg_v25.0e.nc"
+import pathlib
 
 LONG_START = -40.375
 LAT_START = 25.375
 RESOLUTION = 0.25
-OFFSET = 0.125
+OFFSET = 0
 
 DAYS_START = (1950, 1, 1)
 
@@ -40,6 +36,26 @@ def datestr_to_index(date_str):
     date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
     return date_to_index(date_obj)
 
+def calculate_new_date(start_date: tuple, days_passed: int) -> tuple:
+    """
+    Calculate the new date given a start date and the number of days passed.
+
+    Args:
+    start_date (tuple): A tuple of (year, month, day) representing the start date.
+    days_passed (int): The number of days passed since the start date.
+
+    Returns:
+    tuple: A tuple of (year, month, day) for the resulting date.
+    """
+    # Convert the tuple into a datetime object
+    start_date_obj = datetime(start_date[0], start_date[1], start_date[2])
+    
+    # Add the number of days passed
+    new_date_obj = start_date_obj + timedelta(days=days_passed)
+    
+    # Convert the datetime object back into a tuple
+    return (new_date_obj.year, new_date_obj.month, new_date_obj.day)
+
 
 class WeatherDataset():
     def __init__(self, dataset, variable_name):
@@ -55,8 +71,3 @@ class WeatherDataset():
         end_day = date_to_index(date(year, month, days_range[1]))
 
         return (self.dataset[self.variable_name][start_day:(end_day+1), lat, lon]).data
-
-
-max_ds = WeatherDataset(nc.Dataset(MAX_TEMPERATURE_DATASET), "tx")
-min_ds = WeatherDataset(nc.Dataset(MIN_TEMPERATURE_DATASET), "tn")
-pp_ds = WeatherDataset(nc.Dataset(PRECIPITATION_DATASET), "rr")
